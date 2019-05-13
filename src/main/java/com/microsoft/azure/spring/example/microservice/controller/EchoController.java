@@ -18,4 +18,16 @@ public class EchoController {
     public String echo(@RequestParam("content") String content){
         return content;
     }
+
+    @RequestMapping("/env")
+    @ResponseBody
+    public String env(@RequestParam("key") String key){
+        String v = System.getenv(key);
+
+        if (v == null) {
+            return "NOT_FOUND";
+        } else {
+            return v;
+        }
+    }
 }
