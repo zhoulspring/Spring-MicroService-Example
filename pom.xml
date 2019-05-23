@@ -1,43 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.4.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.microsoft.azure.spring</groupId>
-	<artifactId>example.microservice</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>example.microservice</name>
-	<description>Spring Boot Example</description>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.4.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.microsoft.azure.spring</groupId>
+    <artifactId>example.microservice</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>example.microservice</name>
+    <description>Spring Boot Example</description>
 
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
+    <properties>
+        <java.version>1.8</java.version>
+        <acr.resource.path>GenevaMetricTestACR.azurecr.io</acr.resource.path>
+        <maven.build.timestamp.format>yyyyMMdd-HHmmssSSS</maven.build.timestamp.format>
+        <start-class>com.microsoft.azure.spring.example.microservice.Application</start-class>
+    </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>1.0.0-rc2</version>
+                <configuration>
+                    <from>
+                        <image>openjdk:8-jre-alpine</image>
+                    </from>
+                    <to>
+                        <image>${acr.resource.path}/${project.name}</image>
+                        <auth>
+                            <username>GenevaMetricTestACR</username>
+                            <password>m=3Fo5bYh6pZSEixGb5XpjgTwzrTJ3NG</password>
+                        </auth>
+                        <tags>
+                            <tag>latest</tag>
+                            <tag>${maven.build.timestamp}</tag>
+                        </tags>
+                    </to>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
